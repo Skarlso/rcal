@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
 
 require 'thor'
+require 'rcal'
 
-class RCal < Thor
+class RCalCli < Thor
   desc 'show MONTH YEAR', 'Shows the calendar.'
   def show(month, year)
+    rcal = RCal.new
+    rcal.show_calendar(month, year)
   end
 
   desc 'today', 'Shows breakdown of today.'
@@ -19,4 +22,4 @@ class RCal < Thor
   end
 end
 
-RCal.start
+RCalCli.start
