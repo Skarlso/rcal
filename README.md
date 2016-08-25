@@ -12,4 +12,4 @@ This Gem will not be a multiuser gem. It is intended to be used by a single user
 
 It does use Redis to store user authorizaiton tokens, and it does use CSRF protection via generated token matching, but that is all it does.
 
-Your applications credentials must be stored in a file next to this application or as an environment variable. That is up to you. 
+Your applications credentials must be stored in a file next to this application or as an environment variable. That is up to you.
