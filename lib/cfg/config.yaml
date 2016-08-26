@@ -1,0 +1,5 @@
+color_scheme:
+  busy: red
+  birthday: green
+
+store: redis

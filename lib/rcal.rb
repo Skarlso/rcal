@@ -1,8 +1,14 @@
-class RCal
-  def initialize
-  end
+require 'yaml'
 
-  def show_calendar(month, year)
-    puts month, year
+module RCal
+  class RCal
+    def initialize
+      @config = YAML.load_file(File.join(__dir__, 'config.yaml'))
+    end
+
+    def show_calendar(month, year)
+      p @config
+      puts month, year
+    end
   end
 end

@@ -6,7 +6,7 @@ require 'rcal'
 class RCalCli < Thor
   desc 'show MONTH YEAR', 'Shows the calendar.'
   def show(month, year)
-    rcal = RCal.new
+    rcal = RCal::RCal.new
     rcal.show_calendar(month, year)
   end
 
