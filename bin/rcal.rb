@@ -4,21 +4,29 @@ require 'thor'
 require 'rcal'
 
 class RCalCli < Thor
+  def initialize(*args)
+    super
+    @rcal = RCal::RCal.new
+  end
+
   desc 'show MONTH YEAR', 'Shows the calendar.'
   def show(month, year)
-    rcal = RCal::RCal.new
-    rcal.show_calendar(month, year)
+    @rcal.show_calendar(month, year)
   end
 
-  desc 'today', 'Shows breakdown of today.'
-  def today
-    puts color_shell.set_color('Test this sh*t.', :red, :bold)
+  desc 'day', 'Shows breakdown of today.'
+  def day
+    puts @rcal.day
   end
 
-  private
+  desc 'week', 'Shows breakdown of this week.'
+  def week
+    puts @rcal.week
+  end
 
-  def color_shell
-    Thor::Shell::Color.new
+  desc 'month', 'Shows breakdown of this month.'
+  def month
+    puts @rcal.month
   end
 end
 
