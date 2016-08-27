@@ -16,7 +16,7 @@ module RCal
     end
 
     def day
-      puts color_shell.set_color(calendar(Time.now.iso8601), :red)
+      puts color_shell.set_color(calendar(Time.now.iso8601, 1), :red)
     end
 
     def week
@@ -27,16 +27,16 @@ module RCal
 
     private
 
-    def calendar(date)
+    def calendar(date, max_results)
       calendar = Google::Apis::CalendarV3::CalendarService.new
       calendar.authorization = @credentials
       calendar_id = 'primary'
       response = calendar.list_events(calendar_id,
-                                      max_results: 10,
+                                      max_results: max_results,
                                       single_events: true,
                                       order_by: 'startTime',
                                       time_min: date)
-      p response
+      response.items.each { |i| p i.summary }
       response
     end
 
