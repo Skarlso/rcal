@@ -6,9 +6,17 @@ require 'thor'
 
 module RCal
   class RCal
+    Config = Struct.new(:busy, :bd)
+
     def initialize
       @config = YAML.load_file(File.join(__dir__, '../cfg/config.yaml'))
       @credentials = AuthModule.new(@config['store']).credentials
+      setup_colors
+    end
+
+    def setup_colors
+      @config = Config.new(@config['color_scheme']['busy'].to_sym,
+                           @config['color_scheme']['birthday'].to_sym)
     end
 
     def show_calendar(month, year)
@@ -16,7 +24,7 @@ module RCal
     end
 
     def day
-      puts color_shell.set_color(calendar(Time.now.iso8601, 1), :red)
+      puts color_shell.set_color(calendar(Time.now.iso8601, 1), @config.busy)
     end
 
     def week
