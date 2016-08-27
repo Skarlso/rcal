@@ -1,12 +1,14 @@
 require 'yaml'
 require 'rcal/auth'
 require 'google/apis/calendar_v3'
-require 'date'
 require 'thor'
+require 'time'
 
 module RCal
   class RCal
     Config = Struct.new(:busy, :bd)
+    Calendar = Google::Apis::CalendarV3
+    TIME_FORMAT = '%Y-%m-%dT%H:%M:%S%:z'.freeze
 
     def initialize
       @config = YAML.load_file(File.join(__dir__, '../cfg/config.yaml'))
@@ -24,28 +26,46 @@ module RCal
     end
 
     def day
-      puts color_shell.set_color(calendar(Time.now.iso8601, 1), @config.busy)
+      now = Time.now
+      bd = Time.new(now.year, now.month, now.day, 0, 0, 0, now.strftime('%:z'))
+      ed = bd + (60 * 60 * 24)
+      puts color_shell.set_color(calendar(bd.strftime(TIME_FORMAT), ed.strftime(TIME_FORMAT)), @config.busy)
     end
 
     def week
+      bd = Time.now
+      ed = bd + (60 * 60 * 24 * 7)
+      puts color_shell.set_color(calendar(bd.iso8601, ed.iso8601), @config.busy)
     end
 
     def month
+      bd = Time.now
+      ed = bd + (60 * 60 * 24)
+      puts color_shell.set_color(calendar(bd.iso8601, ed.iso8601), @config.busy)
     end
 
     private
 
-    def calendar(date, max_results)
-      calendar = Google::Apis::CalendarV3::CalendarService.new
+    def calendar(begin_date, end_date)
+      calendar = Calendar::CalendarService.new
       calendar.authorization = @credentials
-      calendar_id = 'primary'
-      response = calendar.list_events(calendar_id,
-                                      max_results: max_results,
-                                      single_events: true,
-                                      order_by: 'startTime',
-                                      time_min: date)
-      response.items.each { |i| p i.summary }
-      response
+      events = []
+      all_calendar_ids.each do |calendar_id|
+        response = calendar.list_events(calendar_id,
+                                        # max_results: max_results,
+                                        single_events: true,
+                                        order_by: 'startTime',
+                                        time_min: begin_date,
+                                        time_max: end_date)
+        response.items.each { |i| events << i.summary }
+      end
+      events
+    end
+
+    def all_calendar_ids
+      calendar = Calendar::CalendarService.new
+      calendar.authorization = @credentials
+      calendar.list_calendar_lists.items.each_with_object([]) { |i, o| o << i.id }
     end
 
     def color_shell
