@@ -12,6 +12,6 @@ Notes: Anything is included that is listed by `git ls-files`. This might not be 
 
 This Gem will not be a multiuser gem. It is intended to be used by a single user in his/her own environment.
 
-It does use Redis to store user authorizaiton tokens, and it does use CSRF protection via generated token matching, but that is all it does.
+It does use Redis to store the user's authorisation token, and it does use CSRF protection via generated token matching, but that is all it does.
 
-Your applications credentials must be stored in a file next to this application or as an environment variable. That is up to you.
+Your applications credentials must be stored in a file next to this application as `creds.json`. And your user_id variable which is used in the store to store your user_id is in a file called `user_id` in the root of this project along with creds.json.
