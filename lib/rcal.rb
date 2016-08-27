@@ -47,18 +47,24 @@ module RCal
     private
 
     def calendar(begin_date, end_date)
+      # lock = Mutex.new
       calendar = Calendar::CalendarService.new
       calendar.authorization = @credentials
+      # this is semi thread safe because it's only adding values.
       events = []
+      threads = []
+
       all_calendar_ids.each do |calendar_id|
-        response = calendar.list_events(calendar_id,
-                                        # max_results: max_results,
-                                        single_events: true,
-                                        order_by: 'startTime',
-                                        time_min: begin_date,
-                                        time_max: end_date)
-        response.items.each { |i| events << i.summary }
+        threads << Thread.new do
+          response = calendar.list_events(calendar_id,
+                                          single_events: true,
+                                          order_by: 'startTime',
+                                          time_min: begin_date,
+                                          time_max: end_date)
+          response.items.each { |i| events << i.summary }
+        end
       end
+      threads.each(&:join)
       events
     end
 
