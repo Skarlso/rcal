@@ -16,17 +16,17 @@ class RCalCli < Thor
 
   desc 'day', 'Shows breakdown of today.'
   def day
-    puts @rcal.day
+    @rcal.day
   end
 
   desc 'week', 'Shows breakdown of this week.'
   def week
-    puts @rcal.week
+    @rcal.week
   end
 
   desc 'month', 'Shows breakdown of this month.'
   def month
-    puts @rcal.month
+    @rcal.month
   end
 end
 
