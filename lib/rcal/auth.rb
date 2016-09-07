@@ -6,8 +6,7 @@ module RCal
     OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
     CREDENTIALS_PATH = File.join(Dir.home, '.credentials', 'calendar_creds.yaml').freeze
     def initialize(store)
-      # The block makes sure that the file is closed after reading it.
-      @user_id = File.open('user_id', 'rb', &:read).chop
+      @user_id = ENV['RCAL_USER_ID']
       @scope = 'https://www.googleapis.com/auth/calendar'
       @client_id = Google::Auth::ClientId.from_file('auth_creds.json')
       case store
