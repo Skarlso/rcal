@@ -6,7 +6,7 @@ To install the gem for testing, run `bundle install && rake install`.
 
 After that, the bin should work just fine.
 
-Notes: Anything is included that is listed by `git ls-files`. This might not be a good way to go?
+Notes: Anything is included that is listed by `git ls-files`.
 
 # Google Integration
 
