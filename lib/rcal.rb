@@ -77,8 +77,7 @@ module RCal
         end
       end
       threads.each(&:join)
-      summaries = []
-      events.size.times.with_object(summaries) { |_| summaries << events.pop }
+      events.size.times.with_object([]) { |_, o| o << events.pop }
     end
 
     def all_calendar_ids

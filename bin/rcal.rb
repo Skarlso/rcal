@@ -3,6 +3,7 @@
 require 'thor'
 require 'rcal'
 
+# Providing a binary for RCal.
 class RCalCli < Thor
   def initialize(*args)
     super

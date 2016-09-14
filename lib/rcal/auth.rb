@@ -23,7 +23,6 @@ module RCal
 
     def credentials
       credentials = @authorizer.get_credentials(@user_id)
-      # p credentials
       if credentials.nil?
         url = @authorizer.get_authorization_url(base_url: OOB_URI)
         puts "Open #{url} in your browser and enter the resulting code:"
